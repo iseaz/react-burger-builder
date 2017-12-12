@@ -16,6 +16,10 @@ class ContactData extends Component {
 					placeholder: 'Your Name'
 				},
 				value: '',
+				validation: {
+					required: true
+				},
+				valid: false
 			},
 			street: {
 				elementType: 'input',
@@ -24,6 +28,10 @@ class ContactData extends Component {
 					placeholder: 'Street'
 				},
 				value: '',
+				validation: {
+					required: true
+				},
+				valid: false
 			},
 			zipCode: {
 				elementType: 'input',
@@ -32,6 +40,10 @@ class ContactData extends Component {
 					placeholder: 'ZIP Code'
 				},
 				value: '',
+				validation: {
+					required: true
+				},
+				valid: false
 			},
 			country: {
 				elementType: 'input',
@@ -40,6 +52,10 @@ class ContactData extends Component {
 					placeholder: 'Country'
 				},
 				value: '',
+				validation: {
+					required: true
+				},
+				valid: false
 			},
 			email: {
 				elementType: 'input',
@@ -48,6 +64,10 @@ class ContactData extends Component {
 					placeholder: 'Your Mail'
 				},
 				value: '',
+				validation: {
+					required: true
+				},
+				valid: false
 			},
 			deliveryMethod: {
 				elementType: 'select',
@@ -58,6 +78,10 @@ class ContactData extends Component {
 					]
 				},
 				value: '',
+				validation: {
+					required: true
+				},
+				valid: false
 			},
 		},
 		loading: false,
@@ -97,6 +121,20 @@ class ContactData extends Component {
 			})
 	}
 
+	checkValidity(value, rules){
+		let isValid = false
+
+		if (rules.required) {
+			isValid = value.trim() !== ''
+		}
+
+		if (rules.minLength) {
+			isValid = value.length >= rules.minLength
+		}
+
+		return isValid
+	}
+
 	inputChangedHandler = (event, inputIdentifier) => {
 		const updatedOrderForm = {
 			...this.state.orderForm
@@ -107,6 +145,7 @@ class ContactData extends Component {
 		}
 
 		updatedFormElement.value = event.target.value
+		updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation)
 		updatedOrderForm[inputIdentifier] = updatedFormElement
 
 		this.setState({
